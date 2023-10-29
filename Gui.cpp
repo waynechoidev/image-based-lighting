@@ -35,7 +35,7 @@ void Gui::update(bool& useTexture, bool& wireFrame, bool& backFaceCull,
 	ImGui::SliderFloat3("Scaling", &scaling, 0.1f, 2.0f);
 
 	ImGui::Text("View");
-	ImGui::SliderFloat2("Rotation", viewRotation, -3.14f, 3.14f);
+	ImGui::SliderFloat2("View rotation", viewRotation, -3.14f, 3.14f);
 
 	ImGui::Text("Projection");
 	if (ImGui::RadioButton("Perspective", usePerspective == true)) {
