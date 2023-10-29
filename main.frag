@@ -38,6 +38,7 @@ layout(std140) uniform Light
 } light;
 
 uniform sampler2D theTexture;
+uniform samplerCube skybox;
 
 float calcAttenuation(float d, float falloffStart, float falloffEnd)
 {
@@ -135,5 +136,6 @@ void main()
     
     res += computeSpotLight(posWorld, normalWorld, toEye) * light.isSpot;
 
-	colour = useTexture ? vec4(res, 1.0) * texture(theTexture, TexCoord) : vec4(res, 1.0);
+	// colour = useTexture ? vec4(res, 1.0) * texture(theTexture, TexCoord) : vec4(res, 1.0);
+    colour = texture(skybox, reflect(-toEye, normalWorld));
 }
