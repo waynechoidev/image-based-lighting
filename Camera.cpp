@@ -1,83 +1,38 @@
 #include "Camera.h"
 
-Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLfloat startPitch, GLfloat startMoveSpeed, GLfloat startTurnSpeed)
+Camera::Camera(glm::vec3 startPosition, glm::vec3 startUp, glm::vec3 startFront)
 {
-	position = startPosition;
-	worldUp = startUp;
-	yaw = startYaw;
-	pitch = startPitch;
-	front = glm::vec3(0.0f, 0.0f, -1.0f);
+    _startPosition = _position = startPosition;
+    _startUp = _up = startUp;
+    _startFront = _front = startFront;
 
-	moveSpeed = startMoveSpeed;
-	turnSpeed = startTurnSpeed;
-
-	update();
-}
-
-glm::vec3 Camera::getPosition()
-{
-	return position;
+    _rotate = glm::vec3(0.0f, 0.0f, 0.0f);
+    update();
 }
 
 void Camera::update()
 {
-	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	front.y = sin(glm::radians(pitch));
-	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-	front = glm::normalize(front);
+    glm::mat4 rotationMatrix = glm::mat4(1.0f);
+    rotationMatrix = glm::rotate(rotationMatrix, _rotate.x, glm::vec3(1.0f, 0.0f, 0.0f));
+    rotationMatrix = glm::rotate(rotationMatrix, _rotate.y, glm::vec3(0.0f, 1.0f, 0.0f));
+    //rotationMatrix = glm::rotate(rotationMatrix, _rotate.z, glm::vec3(0.0f, 0.0f, 1.0f));
 
-	right = glm::normalize(glm::cross(front, worldUp));
-	up = glm::normalize(glm::cross(right, front));
-
+    _position = glm::vec3(rotationMatrix * glm::vec4(_startPosition, 1.0f));
+    _front = glm::vec3(rotationMatrix * glm::vec4(_startFront, 1.0f));
+    _up = glm::vec3(rotationMatrix * glm::vec4(_startUp, 1.0f));
 }
 
 
-void Camera::keyControl(bool* keys, GLfloat deltaTime)
+glm::vec3 Camera::getPosition()
 {
-	GLfloat velocity = moveSpeed * deltaTime;
-
-	if (keys[GLFW_KEY_W])
-	{
-		position += front * velocity;
-	}
-	if (keys[GLFW_KEY_S])
-	{
-		position -= front * velocity;
-	}
-	if (keys[GLFW_KEY_A])
-	{
-		position -= right * velocity;
-	}
-	if (keys[GLFW_KEY_D])
-	{
-		position += right * velocity;
-	}
-}
-
-void Camera::mouseControl(GLfloat xChange, GLfloat yChange)
-{
-	xChange *= turnSpeed;
-	yChange *= turnSpeed;
-
-	yaw += xChange;
-	pitch += yChange;
-
-	if (pitch > 89.0f)
-	{
-		pitch = 89.0f;
-	}
-
-	if (pitch < -89.0f)
-	{
-		pitch = -89.0f;
-	}
-
-	update();
+    update();
+    return _position;
 }
 
 glm::mat4 Camera::calculateViewMatrix()
 {
-	return glm::lookAt(position, position + front, up);
+    update();
+    return glm::lookAt(_position, _position + _front, _up);
 }
 
 Camera::~Camera() {}

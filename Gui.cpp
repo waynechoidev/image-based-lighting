@@ -13,6 +13,7 @@ void Gui::initialise(GLFWwindow* window)
 
 void Gui::update(bool& useTexture, bool& wireFrame, bool& backFaceCull,
 	float& translation, float& scaling, float& rotation,
+	float* viewRotation,
 	bool& usePerspective, Material& material, Light& light)
 {
 	ImGui_ImplOpenGL3_NewFrame();
@@ -32,6 +33,9 @@ void Gui::update(bool& useTexture, bool& wireFrame, bool& backFaceCull,
 	ImGui::SliderFloat3("Translation", &translation, -3.0f, 3.0f);
 	ImGui::SliderFloat3("Rotation", &rotation, -3.14f, 3.14f);
 	ImGui::SliderFloat3("Scaling", &scaling, 0.1f, 2.0f);
+
+	ImGui::Text("View");
+	ImGui::SliderFloat2("Rotation", viewRotation, -3.14f, 3.14f);
 
 	ImGui::Text("Projection");
 	if (ImGui::RadioButton("Perspective", usePerspective == true)) {

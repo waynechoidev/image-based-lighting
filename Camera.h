@@ -11,29 +11,20 @@
 class Camera
 {
 public:
-	Camera(glm::vec3 startPosition, glm::vec3 startUp, GLfloat startYaw, GLfloat startPitch, GLfloat startMoveSpeed, GLfloat startTurnSpeed);
-
-	void keyControl(bool* keys, GLfloat deltaTime);
-	void mouseControl(GLfloat xChange, GLfloat yChange);
+	Camera(glm::vec3 startPosition, glm::vec3 startUp, glm::vec3 startFront);
 
 	glm::vec3 getPosition();
-
+	GLfloat* getRotation() { return &_rotate.x; }
 	glm::mat4 calculateViewMatrix();
 
 	~Camera();
 
 private:
-	glm::vec3 position;
-	glm::vec3 front;
-	glm::vec3 up;
-	glm::vec3 right;
-	glm::vec3 worldUp;
+	glm::vec3 _startPosition, _position;
+	glm::vec3 _startFront, _front;
+	glm::vec3 _startUp, _up;
 
-	GLfloat yaw;
-	GLfloat pitch;
-
-	GLfloat moveSpeed;
-	GLfloat turnSpeed;
+	glm::vec3 _rotate;
 
 	void update();
 };

@@ -52,7 +52,7 @@ int main()
 	Texture earthTexture = Texture();
 	earthTexture.initialise("textures/map.jpg");
 
-	Camera camera = Camera(glm::vec3(0.0f, 0.0f, 2.5f), glm::vec3{0.0f, 1.0f, 0.0f}, -90.0f, 0.0f, 5.0f, 0.0f);
+	Camera camera = Camera(glm::vec3(0.0f, 0.0f, 2.5f), glm::vec3{0.0f, 1.0f, 0.0f}, glm::vec3(0.0f, 0.0f, -1.0f));
 
 	// Control
 	bool useTexture = true;
@@ -99,12 +99,10 @@ int main()
 
 		// Get + Handle user input events
 		glfwPollEvents();
-
-		camera.keyControl(mainWindow.getsKeys(), deltaTime);
-		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
-
+	
 		gui.update(useTexture, wireFrame, backFaceCull,
 			translation.x, scaling.x, rotation.x,
+			camera.getRotation(),
 			usePerspective, material, light);
 
 		glPolygonMode(GL_FRONT_AND_BACK, wireFrame ? GL_LINE : GL_FILL);
@@ -117,7 +115,7 @@ int main()
 
 		// Model
 		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(translation.x , translation.y, translation.z  ));
+		model = glm::translate(model, glm::vec3(translation.x , translation.y, translation.z));
 		model = glm::scale(model, scaling);
 		model = glm::rotate(model, rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
