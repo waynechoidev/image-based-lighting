@@ -8,7 +8,7 @@ class Sphere : public Mesh
 {
 public:
 	Sphere(GLfloat radius, GLuint numOfSlices, GLuint numOfStacks);
-	Sphere(GLfloat radius) :Sphere(radius, 20, 20) {}
+	Sphere(GLfloat radius) :Sphere(radius, 30, 30) {}
 	Sphere() :Sphere(1.0f) {}
 
 	~Sphere() {}
