@@ -135,7 +135,11 @@ void main()
     res += computePointLight(posWorld, normalWorld, toEye) * light.isPoint;
     
     res += computeSpotLight(posWorld, normalWorld, toEye) * light.isSpot;
+    
+    if(useTexture)
+    {
+        res = (vec4(res, 1.0) * texture(theTexture, TexCoord)).xyz;
+    }
 
-	// colour = useTexture ? vec4(res, 1.0) * texture(theTexture, TexCoord) : vec4(res, 1.0);
-    colour = texture(skybox, reflect(-toEye, normalWorld));
+	colour = texture(skybox, reflect(-toEye, normalWorld));
 }

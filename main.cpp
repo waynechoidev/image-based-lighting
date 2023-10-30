@@ -19,7 +19,7 @@ GLfloat lastTime = 0.0f;
 
 int main()
 {
-	Window mainWindow = Window(1366, 768);
+	Window mainWindow = Window(1920, 1080);
 	mainWindow.initialise();
 
 	Gui gui = Gui();
