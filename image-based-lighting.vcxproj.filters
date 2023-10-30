@@ -115,5 +115,23 @@
     <Image Include="LancellottiChapel\bottom.jpg">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="LancellottiChapel\diffuse-bottom.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="LancellottiChapel\diffuse-top.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="LancellottiChapel\diffuse-right.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="LancellottiChapel\diffuse-left.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="LancellottiChapel\diffuse-front.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="LancellottiChapel\diffuse-back.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

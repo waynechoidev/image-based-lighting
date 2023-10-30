@@ -161,6 +161,12 @@
   <ItemGroup>
     <Image Include="LancellottiChapel\back.jpg" />
     <Image Include="LancellottiChapel\bottom.jpg" />
+    <Image Include="LancellottiChapel\diffuse-back.jpg" />
+    <Image Include="LancellottiChapel\diffuse-bottom.jpg" />
+    <Image Include="LancellottiChapel\diffuse-front.jpg" />
+    <Image Include="LancellottiChapel\diffuse-left.jpg" />
+    <Image Include="LancellottiChapel\diffuse-right.jpg" />
+    <Image Include="LancellottiChapel\diffuse-top.jpg" />
     <Image Include="LancellottiChapel\front.jpg" />
     <Image Include="LancellottiChapel\left.jpg" />
     <Image Include="LancellottiChapel\right.jpg" />

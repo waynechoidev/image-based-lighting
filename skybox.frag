@@ -1,10 +1,11 @@
-#version 330
+#version 420
 
 in vec3 TexCoords;
 
 out vec4 colour;
 
-uniform samplerCube skybox;
+layout(binding=0) uniform samplerCube skybox;
+layout(binding=1) uniform samplerCube diffuseCubemap; 
 
 void main()
 {

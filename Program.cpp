@@ -105,13 +105,6 @@ void Program::genFragmentBuffers()
 	glUniformBlockBinding(_programID, materialBlockIndex, 2);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 2, _uboMaterial);
 
-	glGenBuffers(1, &_uboLight);
-	glBindBuffer(GL_UNIFORM_BUFFER, _uboLight);
-	glBufferData(GL_UNIFORM_BUFFER, 56, nullptr, GL_DYNAMIC_DRAW);
-	GLuint lightBlockIndex = glGetUniformBlockIndex(_programID, "Light");
-	glUniformBlockBinding(_programID, lightBlockIndex, 3);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 3, _uboLight);
-
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
@@ -130,7 +123,7 @@ void Program::bindVertexBuffers(glm::mat4 model, glm::mat4 projection, glm::mat4
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void Program::bindFragmentBuffers(bool useTexture, glm::vec3 viewPosition, const Material& material, const Light& light)
+void Program::bindFragmentBuffers(bool useTexture, glm::vec3 viewPosition, const Material& material)
 {
 	glBindBuffer(GL_UNIFORM_BUFFER, _uboFragment);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, 12, glm::value_ptr(viewPosition));
@@ -143,19 +136,6 @@ void Program::bindFragmentBuffers(bool useTexture, glm::vec3 viewPosition, const
 	glBufferSubData(GL_UNIFORM_BUFFER, 8, 4, &material.diffuse);
 	glBufferSubData(GL_UNIFORM_BUFFER, 12, 4, &material.specular);
 
-	glBindBuffer(GL_UNIFORM_BUFFER, _uboLight);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, 12, glm::value_ptr(light.position));
-	glBufferSubData(GL_UNIFORM_BUFFER, 12, 4, &light.strength);
-	glBufferSubData(GL_UNIFORM_BUFFER, 16, 12, glm::value_ptr(light.direction));
-	glBufferSubData(GL_UNIFORM_BUFFER, 28, 4, &light.fallOffStart);
-	glBufferSubData(GL_UNIFORM_BUFFER, 32, 4, &light.fallOffEnd);
-	glBufferSubData(GL_UNIFORM_BUFFER, 36, 4, &light.spotPower);
-	glBufferSubData(GL_UNIFORM_BUFFER, 40, 4, &light.isDirectional);
-	glBufferSubData(GL_UNIFORM_BUFFER, 44, 4, &light.isPoint);
-	glBufferSubData(GL_UNIFORM_BUFFER, 48, 4, &light.isSpot);
-	int useBlinnPhongInt = light.useBlinnPhong ? 1 : 0;
-	glBufferSubData(GL_UNIFORM_BUFFER, 52, 4, &useBlinnPhongInt);
-
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
@@ -167,7 +147,7 @@ void Program::clear()
 		_programID = 0;
 	}
 
-	_uboMatrices = _uboFragment = _uboMaterial = _uboLight = 0;
+	_uboMatrices = _uboFragment = _uboMaterial = 0;
 }
 
 

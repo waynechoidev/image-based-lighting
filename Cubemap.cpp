@@ -41,9 +41,9 @@ void Cubemap::initialise(std::vector<std::string> faceLocations)
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
-void Cubemap::use()
+void Cubemap::use(GLint index)
 {
-	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(index == 0 ? GL_TEXTURE0 : GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _textureID);
 }
 

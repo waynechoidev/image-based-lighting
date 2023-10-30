@@ -49,6 +49,16 @@ int main()
 	faces.push_back("LancellottiChapel/back.jpg");
 	cubemap.initialise(faces);
 
+	Cubemap diffuseCubemap = Cubemap();
+	faces.clear();
+	faces.push_back("LancellottiChapel/diffuse-right.jpg");
+	faces.push_back("LancellottiChapel/diffuse-left.jpg");
+	faces.push_back("LancellottiChapel/diffuse-top.jpg");
+	faces.push_back("LancellottiChapel/diffuse-bottom.jpg");
+	faces.push_back("LancellottiChapel/diffuse-front.jpg");
+	faces.push_back("LancellottiChapel/diffuse-back.jpg");
+	diffuseCubemap.initialise(faces);
+
 	Texture earthTexture = Texture();
 	earthTexture.initialise("textures/map.jpg");
 
@@ -56,8 +66,6 @@ int main()
 
 	// Control
 	bool useTexture = true;
-	bool wireFrame = false;
-	bool backFaceCull = true;
 
 	// Model
 	glm::vec3 translation = { 0.0f, 0.0f, 0.0f };
@@ -66,9 +74,7 @@ int main()
 
 	// Projection
 	float aspectRatio = (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight();
-	glm::mat4 perspectiveProjection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
-	glm::mat4 orthographicProjection = glm::ortho(-1.0f * aspectRatio, 1.0f * aspectRatio, -1.0f, 1.0f, 0.1f, 100.0f);
-	bool usePerspective = true;
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
 
 	// Material
 	Material material;
@@ -76,19 +82,6 @@ int main()
 	material.shininess = 1.0f;
 	material.diffuse = 1.0f;
 	material.specular = 1.0f;
-
-	// Light
-	Light light;
-	light.position = { 0.0f, 0.0f, 2.0f };
-	light.direction = { 0.0f, 0.0f, -1.0f };
-	light.strength = 1.0;
-	light.fallOffStart = 0.0f;
-	light.fallOffEnd = 10.0f;
-	light.spotPower = 1.0f;
-	light.isDirectional = 0;
-	light.isPoint = 0;
-	light.isSpot = 1;
-	light.useBlinnPhong = true;
 
 	//glm::mat4 model(1.0f);
 	while (!mainWindow.getShouldClose())
@@ -100,18 +93,12 @@ int main()
 		// Get + Handle user input events
 		glfwPollEvents();
 	
-		gui.update(useTexture, wireFrame, backFaceCull,
-			translation.x, scaling.x, rotation.x,
-			camera.getRotation(),
-			usePerspective, material, light);
+		gui.update(useTexture, translation.x, scaling.x, rotation.x, camera.getRotation(), material);
 
-		glPolygonMode(GL_FRONT_AND_BACK, wireFrame ? GL_LINE : GL_FILL);
-		backFaceCull ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glEnable(GL_CULL_FACE);
 
 		mainWindow.clear(0.0f, 0.0f, 0.0f, 1.0f);
-
-		// Projection
-		glm::mat4 projection = usePerspective ? perspectiveProjection : orthographicProjection;
 
 		// Model
 		glm::mat4 model = glm::mat4(1.0f);
@@ -124,20 +111,21 @@ int main()
 		glDepthMask(GL_FALSE);
 		cubemapProgram.use();
 		cubemap.use();
+		diffuseCubemap.use(1);
 		skybox.draw();
 		glDepthMask(GL_TRUE);
 
 		mainProgram.use();
 		mainProgram.bindVertexBuffers(model, projection, camera.calculateViewMatrix());
-		mainProgram.bindFragmentBuffers(useTexture, camera.getPosition(), material, light);
+		mainProgram.bindFragmentBuffers(useTexture, camera.getPosition(), material);
 		earthTexture.use();
 		sphere.draw();
-
 
 		gui.render();
 
 		glUseProgram(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
 		mainWindow.swapBuffers();
 	}

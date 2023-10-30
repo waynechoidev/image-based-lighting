@@ -10,7 +10,8 @@ public:
 	Cubemap();
 
 	void initialise(std::vector<std::string> faceLocations);
-	void use();
+	void use(GLint index);
+	void use() { use(0);}
 	void clear();
 
 	~Cubemap();
